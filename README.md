@@ -37,8 +37,9 @@ $ npm run test:coverage
 This API is a simple but important API for motorway that is responsible for retrieving valuations for cars from a 3rd party (SuperCar Valuations) by the VRM (Vehicle Registration Mark) and mileage.
 
 - The API has two routes
-	- A PUT (/valuations/{vrm}) request to create a valuation for a vehicle which accepts a small amount of input data and performs some simple validation logic.
-	- A GET (/valuations/{vrm}) request to get an existing valuation. Returns 404 if no valuation for the vrm exists.
+
+  - A PUT (/valuations/{vrm}) request to create a valuation for a vehicle which accepts a small amount of input data and performs some simple validation logic.
+  - A GET (/valuations/{vrm}) request to get an existing valuation. Returns 404 if no valuation for the vrm exists.
 
 - The PUT operation handles calling a third-party API to perform the actual valuation, there is some rudimentary mapping logic between Motorway & 3rd party requests/responses.
 - The PUT request is not truly idempotent so the 3rd party is called each time this operation is called and the code catches duplicate key exceptions when writing to the database.
@@ -81,15 +82,14 @@ Here are a full list of tasks that need to be completed:
 
 - To help with auditing service level agreements with the providers over an indefinite time period, there is a need to store the following details of the request:
 
-    - Request date and time
-    - Request duration
-    - Request url
-    - Response code
-    - Error code/message if applicable and the
-    - Name of the provider
+  - Request date and time
+  - Request duration
+  - Request url
+  - Response code
+  - Error code/message if applicable and the
+  - Name of the provider
 
-    The details must be stored in a ProviderLogs table, which is correlated to a VRM, there could potentially be more than one log per VRM.
-
+  The details must be stored in a ProviderLogs table, which is correlated to a VRM, there could potentially be more than one log per VRM.
 
 ## 3rd Party APIs
 
@@ -117,6 +117,92 @@ The OpenAPI Specification can be found [here](http://localhost:3002/docs).
 
 The URI for this test stub in Mocky is https://run.mocky.io/v3/0dfda26a-3a5a-43e5-b68c-51f148eda473.
 
-
 # Candidate Notes
+
 Here is a place for you to put any notes regarding the changes you made and the reasoning and what further changes you wish to suggest.
+
+## Architecture Summary
+
+I've completely refactored the car valuation API to be more maintainable, extensible, and robust. Here's a summary of the key components and the improvements made:
+
+### Key Components
+
+1. **Providers** - I've implemented two providers
+
+   - SuperCarProvider - `fetchValuationFromSuperCarValuation` Primary car valuation provider
+   - PremiumCarProvider - `fetchValuationFromPremiumCarValuation` Fallback provider
+
+2. **FailoverManager** - Handles the failover logic with potentially configurable parameters:
+
+   - Tracks request success/failure rates
+   - Switches to fallback provider when primary provider failure rate exceeds threshold
+   - Implements cooldown period to revert back to primary provider
+
+3. **Services**:
+
+   - ValuationService - `fetchCarValuation` Handles business logic for creating and retrieving valuations
+
+4. **Repositories**:
+
+   - ValuationRepository - Handles database operations for valuations
+   - ProviderLogRepository - Handles logging of provider requests
+
+5. **Controllers & Routes**:
+   - ValuationController - Handles HTTP requests and responses
+   - valuationRoutes - Defines API routes and validation
+
+### Improvements
+
+1. **Cost Optimization**:
+
+   - Check database for valuations to avoid calling providers for existing valuations
+   - Request logs are stored for auditing and monitoring purposes
+
+2. **Fault Tolerance**:
+
+   - Implemented failover mechanism with potentially configurable threshold
+   - Returns 503 Service Unavailable when both providers fail
+   - Added cooldown period to revert to primary provider
+
+3. **Provider Tracking**:
+
+   - Added provider name to valuation records
+   - Implemented backwards compatibility for existing records without provider name
+   - Added comprehensive logging of all provider requests
+
+4. **Architecture**:
+
+   - Separated concerns into appropriate layers
+
+5. **Testing**:
+   - Added comprehensive functional tests for the API
+   - Used nock for mocking HTTP requests to third-party providers
+
+### Multi-Node Cluster Considerations
+
+For a multi-node cluster deployment, the current implementation has a limitation since the FailoverManager tracks failure rates locally to each instance. Here are some approaches to handle this:
+
+1. **Distributed Cache** - Use Redis or a similar distributed cache to track failure rates across all instances:
+
+   - Each instance would update the shared counter when experiencing failures
+   - The failover decision would be based on aggregate data
+
+2. **Event-Driven Architecture** - Implement a message bus (Kafka, RabbitMQ):
+
+   - Instances broadcast provider failures to all other instances
+   - Each instance maintains a synchronized view of the overall system health
+
+3. **Centralized Health Check** - Implement a dedicated health monitoring service:
+   - All instances report their provider interactions
+   - The health monitor decides when to trigger failover
+   - Instances query the health monitor to determine which provider to use
+
+This implementation addresses all the requirements while providing a clean, maintainable architecture that can be easily extended in the future.
+
+### Test report
+
+![image](./report.png)
+
+### Code coverage
+
+![image](./coverage.png)
