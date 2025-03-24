@@ -76,7 +76,7 @@ describe('FailoverManager', () => {
   describe('Cooldown period', () => {
     it('should continue using fallback during cooldown period', () => {
       // Trigger fallback mode
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i <= 10; i++) {
         failoverManager.recordFailure();
       }
 
@@ -93,7 +93,7 @@ describe('FailoverManager', () => {
 
     it('should revert to primary after cooldown period', () => {
       // Trigger fallback mode
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i <= 10; i++) {
         failoverManager.recordFailure();
       }
 
@@ -113,7 +113,7 @@ describe('FailoverManager', () => {
   describe('Manual reset', () => {
     it('should reset fallback status when explicitly requested', () => {
       // Trigger fallback mode
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i <= 10; i++) {
         failoverManager.recordFailure();
       }
 
