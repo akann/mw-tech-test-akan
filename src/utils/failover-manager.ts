@@ -16,7 +16,7 @@ export class FailoverManager {
   private windowSize = 10; // 100 requests
   private failureThreshold = 50; // 50% failure rate
   private cooldownPeriod = 10 * 60 * 1000; // 10 minutes by default;
-  // private cooldownPeriod = 60 * 1000; // 10 minutes by default;
+  // private cooldownPeriod = 30 * 1000; // 10 minutes by default;
 
   constructor() {}
 
@@ -30,6 +30,7 @@ export class FailoverManager {
   }
 
   public shouldUseFallbackProvider(): boolean {
+    this.checkForRevert();
     // If already using fallback, continue using it until cooldown period expires
     if (this.usingFallbackProvider) {
       return true;
