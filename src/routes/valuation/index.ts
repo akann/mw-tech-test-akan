@@ -52,6 +52,12 @@ export function valuationRoutes(fastify: FastifyInstance) {
     const { vrm } = request.params;
     const { mileage } = request.body;
 
+    if (!vrm?.length) {
+      return reply
+        .code(404)
+        .send({ message: 'vrm must provided', statusCode: 404 });
+    }
+
     if (vrm.length > 7) {
       return reply
         .code(400)
