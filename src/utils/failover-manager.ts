@@ -13,12 +13,11 @@ export class FailoverManager {
   private usingFallbackProvider: boolean = false;
   private fallbackStartTime: number = 0;
 
-  private windowSize = 10; // 100 requests
-  private failureThreshold = 50; // 50% failure rate
-  private cooldownPeriod = 10 * 60 * 1000; // 10 minutes by default;
-  // private cooldownPeriod = 30 * 1000; // 10 minutes by default;
-
-  constructor() {}
+  constructor(
+    private windowSize: number,
+    private failureThreshold: number,
+    private cooldownPeriod: number,
+  ) {}
 
   public recordSuccess(): void {
     this.addStatusRecord(ProviderStatus.SUCCESS);

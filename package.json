@@ -3,6 +3,7 @@
   "main": "dist/server.mjs",
   "scripts": {
     "dev": "NODE_ENV=dev vite",
+    "demo": "NODE_ENV=demo vite",
     "build": "vite build --outDir dist --ssr src/server.ts",
     "format": "prettier --config .prettierrc \"src/**/*.{js,json,ts,css,scss,vue,html,md}\" --write",
     "lint": "eslint . --fix",

@@ -10,9 +10,24 @@ declare module 'fastify' {
     failoverManager: FailoverManager;
   }
 }
+const windowSize = process.env.FAILOVER_WINDOW_SIZE
+  ? parseInt(process.env.FAILOVER_WINDOW_SIZE, 10)
+  : 10; // 10 requests by default
+const failureThreshold = process.env.FAILOVER_THRESHOLD
+  ? parseInt(process.env.FAILOVER_THRESHOLD, 10)
+  : 50; // 50% failure rate by default
+const cooldownPeriod = process.env.FAILOVER_COOLDOWN
+  ? parseInt(process.env.FAILOVER_COOLDOWN, 10)
+  : 10 * 60 * 1000; // 10 minutes by default
 
 export function valuationRoutes(fastify: FastifyInstance) {
-  fastify.decorate('failoverManager', new FailoverManager());
+  fastify.decorate(
+    'failoverManager',
+    new FailoverManager(windowSize, failureThreshold, cooldownPeriod),
+  );
+  fastify.log.info(
+    `Failover manager: window size: ${windowSize}, failure threshold: ${failureThreshold}%, cooldown period: ${cooldownPeriod / 1000} seconds`,
+  );
   fastify.get<{
     Params: {
       vrm: string;
@@ -85,7 +100,7 @@ export function valuationRoutes(fastify: FastifyInstance) {
       });
     }
 
-    fastify.log.info('Valuation created: ', valuation);
+    fastify.log.info(`Valuation created: ${JSON.stringify(valuation)}`);
 
     return { valuation, providerLog };
   });

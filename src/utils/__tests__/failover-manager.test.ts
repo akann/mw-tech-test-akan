@@ -4,7 +4,7 @@ describe('FailoverManager', () => {
   let failoverManager: FailoverManager;
 
   beforeEach(() => {
-    failoverManager = new FailoverManager();
+    failoverManager = new FailoverManager(10, 50, 10 * 60 * 1000);
     vi.useFakeTimers();
   });
 
@@ -45,7 +45,7 @@ describe('FailoverManager', () => {
 
     it('should maintain the window size by removing oldest records', () => {
       // Create a new instance for this test to isolate behavior
-      const manager = new FailoverManager();
+      const manager = new FailoverManager(10, 50, 10 * 60 * 1000);
 
       // First, add 5 failures (not enough to trigger fallback)
       for (let i = 0; i < 5; i++) {
