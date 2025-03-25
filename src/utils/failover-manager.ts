@@ -8,6 +8,9 @@ export interface ProviderStatusRecord {
   timestamp: number;
 }
 
+/**
+ * This module was created with some help from AI.
+ */
 export class FailoverManager {
   private primaryProviderStatuses: ProviderStatusRecord[] = [];
   private usingFallbackProvider: boolean = false;

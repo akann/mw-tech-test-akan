@@ -199,10 +199,31 @@ For a multi-node cluster deployment, the current implementation has a limitation
 
 This implementation addresses all the requirements while providing a clean, maintainable architecture that can be easily extended in the future.
 
-### Test report
+## Demo
 
-![image](./report.png)
+To simulate failover, you need to do the following:
+
+1. change the primary provider `SUPER_CAR_BASE_URL` URL in the `.env.demo` file to a non-existent URL
+2. Run the application:
+
+```shell
+npm run demo
+```
+
+3. Run this script:
+
+```shell
+./scripts/failover-demo.sh
+```
+
+### Demo output
+
+![Demo](./docs/failover.gif)
+
+## Test report
+
+![image](./docs/report.png)
 
 ### Code coverage
 
-![image](./coverage.png)
+![image](./docs/coverage.png)
