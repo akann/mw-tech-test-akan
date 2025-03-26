@@ -164,7 +164,7 @@ describe('ValuationController (e2e)', () => {
       await fastify.orm.getRepository(VehicleValuation).insert(newValuation);
       const newProviderLog = {
         providerName: 'SuperCar',
-        requestUrl: `https://run.mocky.io/v3/e519150f-e506-4003-8f8a-6a8a799981fc/valuations/${vrm}?mileage=10000`,
+        requestUrl: `https://run.mocky.io/v3/04565792-82c3-4d44-8e82-052bf5d03a24/valuations/${vrm}?mileage=10000`,
         responseCode: 200,
         vrm,
         requestDuration: 1000,
@@ -193,7 +193,7 @@ describe('ValuationController (e2e)', () => {
 
       expect(providerLog.providerName).toBe('SuperCar');
       expect(providerLog.requestUrl).toBe(
-        `https://run.mocky.io/v3/e519150f-e506-4003-8f8a-6a8a799981fc/valuations/${vrm}?mileage=10000`,
+        `https://run.mocky.io/v3/04565792-82c3-4d44-8e82-052bf5d03a24/valuations/${vrm}?mileage=10000`,
       );
       expect(providerLog.responseCode).toBe(200);
       expect(providerLog.vrm).toBe(vrm);
@@ -231,7 +231,7 @@ describe('ValuationController (e2e)', () => {
 
       expect(providerLog.providerName).toBe('SuperCar');
       expect(providerLog.requestUrl).toBe(
-        `https://run.mocky.io/v3/e519150f-e506-4003-8f8a-6a8a799981fc/valuations/${vrm}?mileage=10000`,
+        `https://run.mocky.io/v3/04565792-82c3-4d44-8e82-052bf5d03a24/valuations/${vrm}?mileage=10000`,
       );
       expect(providerLog.responseCode).toBe(200);
       expect(providerLog.vrm).toBe(vrm);
@@ -330,7 +330,7 @@ describe('ValuationController (e2e)', () => {
       await fastify.orm.getRepository(VehicleValuation).insert(newValuation);
       const newProviderLog = {
         providerName: 'SuperCar',
-        requestUrl: `https://run.mocky.io/v3/e519150f-e506-4003-8f8a-6a8a799981fc/valuations/${vrm}?mileage=10000`,
+        requestUrl: `https://run.mocky.io/v3/04565792-82c3-4d44-8e82-052bf5d03a24/valuations/${vrm}?mileage=10000`,
         responseCode: 200,
         vrm,
         requestDuration: 1000,
@@ -352,7 +352,7 @@ describe('ValuationController (e2e)', () => {
       expect(response.statusCode).toBe(200);
       expect(providerLog.providerName).toBe('SuperCar');
       expect(providerLog.requestUrl).toBe(
-        `https://run.mocky.io/v3/e519150f-e506-4003-8f8a-6a8a799981fc/valuations/${vrm}?mileage=10000`,
+        `https://run.mocky.io/v3/04565792-82c3-4d44-8e82-052bf5d03a24/valuations/${vrm}?mileage=10000`,
       );
       expect(providerLog.responseCode).toBe(200);
       expect(providerLog.vrm).toBe(vrm);

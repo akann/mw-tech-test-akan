@@ -3,12 +3,12 @@
 # This script demonstrates the failover scenario where the primary provider Super Car fails to respond to a request.
 # The system should be able to switch to the secondary provider and return a valuation.
 # It will revert back to the primary provider after cool down period.
-#  
+#
 # To run this script, you need to do the following:
 #  1. change the primary provider "SUPER_CAR_BASE_URL" URL in the .env.demo file to a non-existent URL
 #  2. Run the application: npm run demo
 #  3. Run this script: ./scripts/failover-demo.sh
- 
+
 echo "Emptying the database..."
 
 sqlite3 database/valuations-dev.sqlite "DELETE FROM vehicle_valuation"

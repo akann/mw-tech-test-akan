@@ -8,7 +8,7 @@ import { CarValuationResponse } from '../types/car-valuation-response';
 // should be in a config module so it can be validated
 export const SUPER_CAR_BASE_URL =
   process.env.SUPER_CAR_BASE_URL ||
-  'https://run.mocky.io/v3/e519150f-e506-4003-8f8a-6a8a799981fc';
+  'https://run.mocky.io/v3/04565792-82c3-4d44-8e82-052bf5d03a24';
 
 export async function fetchValuationFromSuperCarValuation(
   vrm: string,
