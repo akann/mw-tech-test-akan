@@ -203,7 +203,7 @@ This implementation addresses all the requirements while providing a clean, main
 
 To simulate failover, you need to do the following:
 
-1. change the primary provider `SUPER_CAR_BASE_URL` URL in the `.env.demo` file to a non-existent URL
+1. change the primary provider `SUPER_CAR_BASE_URL` URL in the `.env.demo` file to a non-existent URL. e.g. ![image](./docs/diff.png)
 2. Run the application:
 
 ```shell
